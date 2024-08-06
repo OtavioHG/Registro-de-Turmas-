@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividades - {{ turma.nome }}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Atividades da Turma {{ turma.nome }}</h1>
+        <form action="{{ url_for('add_atividade', turma_id=turma.id) }}" method="post" class="mb-3">
+            <div class="form-group">
+                <input type="text" name="nome" class="form-control" placeholder="Nome da Atividade">
+            </div>
+            <div class="form-group">
+                <input type="text" name="descricao" class="form-control" placeholder="Descrição">
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Atividade</button>
+        </form>
+        <ul class="list-group">
+            {% for atividade in turma.atividades %}
+            <li class="list-group-item">
+                {{ atividade.nome }} - {{ atividade.descricao }}
+                <a href="{{ url_for('edit_atividade', id=atividade.id) }}" class="btn btn-warning btn-sm float-right ml-2">Editar</a>
+                <a href="{{ url_for('delete_atividade', id=atividade.id) }}" class="btn btn-danger btn-sm float-right">Excluir</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('turmas') }}" class="btn btn-secondary mt-3">Voltar para Turmas</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Turmas{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Turmas</h1>
+<form action="{{ url_for('add_turma') }}" method="post" class="mb-3">
+    <div class="form-group">
+        <input type="text" name="nome" class="form-control" placeholder="Nome da Turma" required>
+    </div>
+    <div class="form-group">
+        <input type="text" name="descricao" class="form-control" placeholder="Descrição">
+    </div>
+    <button type="submit" class="btn btn-primary">Adicionar Turma</button>
+</form>
+<form action="{{ url_for('join_turma') }}" method="post" class="mb-3">
+    <div class="form-group">
+        <input type="text" name="codigo" class="form-control" placeholder="Código da Turma" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar na Turma</button>
+</form>
+<h2>Suas Turmas</h2>
+<ul class="list-group">
+    {% for turma in turmas %}
+    {% if turma.creator_id == current_user.id %}
+    <li class="list-group-item">
+        {{ turma.nome }} - Código: {{ turma.codigo }}
+        <a href="{{ url_for('edit_turma', id=turma.id) }}" class="btn btn-warning btn-sm float-right ml-2">Editar</a>
+        <a href="{{ url_for('delete_turma', id=turma.id) }}" onclick="return confirm('Deseja excluir esse registro?')" class="btn btn-danger btn-sm float-right ml-2">Excluir</a>
+        <a href="{{ url_for('turma', turma_id=turma.id) }}" class="btn btn-info btn-sm float-right">Ver Atividades</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+<h2>Turmas Acessíveis</h2>
+<ul class="list-group">
+    {% for turma in accessible_turmas %}
+    <li class="list-group-item">
+        {{ turma.nome }} - Código: {{ turma.codigo }}
+        <a href="{{ url_for('turma', turma_id=turma.id) }}" class="btn btn-info btn-sm float-right">Ver Atividades</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
